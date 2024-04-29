@@ -38,5 +38,5 @@ jobs:
                     .Element("Project Sdk="Microsoft.NET.Sdk.Web")
                     .Element("PropertyGroup")
                     .Element("Version")
-                    .SetValue("$(major).$(minor).$(patch).$(build)\");
+                    .SetValue("$(major).$(minor).$(patch).$(build)")
                 $doc.Save($path)
