@@ -35,7 +35,7 @@ jobs:
                 $path = "./TimeService.API/TimeService.API.csproj"
                 $doc = [System.Xml.Linq.XDocument]::Load($path)
                 $doc
-                    .Element("Project")
+                    .Element("Project Sdk="Microsoft.NET.Sdk.Web")
                     .Element("PropertyGroup")
                     .Element("Version")
                     .SetValue("$(major).$(minor).$(patch).$(build)");
