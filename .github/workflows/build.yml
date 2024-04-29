@@ -29,9 +29,8 @@ jobs:
         run: dotnet build ./TimeService.sln --configuration Release --no-restore
 
       - name: Setup App Version
-        uses: actions/PowerShell@2
-        with:
-            inlineScript: |
+        shell: pwsh
+        run: |
                 [Reflection.Assembly]::LoadWithPartialName("System.Xml.Linq")
                 $path = "./TimeService/TimeService.API/TimeService.API.csproj"
                 $doc = [System.Xml.Linq.XDocument]::Load($path)
