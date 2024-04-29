@@ -27,3 +27,17 @@ jobs:
 
       - name: Build
         run: dotnet build ./TimeService.sln --configuration Release --no-restore
+
+      - name: Setup App Version
+        uses: powershell@2
+        with:
+            inlineScript: |
+                [Reflection.Assembly]::LoadWithPartialName("System.Xml.Linq")
+                $path = "./TimeService/TimeService.API/TimeService.API.csproj"
+                $doc = [System.Xml.Linq.XDocument]::Load($path)
+                $doc
+                    .Element("Project")
+                    .Element("PropertyGroup")
+                    .Element("Version")
+                    .SetValue("$(major).$(minor).$(patch).$(build)");
+                $doc.Save($path)
