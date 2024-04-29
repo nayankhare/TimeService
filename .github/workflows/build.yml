@@ -29,7 +29,7 @@ jobs:
         run: dotnet build ./TimeService.sln --configuration Release --no-restore
 
       - name: Setup App Version
-        uses: powershell@2
+        uses: azure/powershell@v1
         with:
             inlineScript: |
                 [Reflection.Assembly]::LoadWithPartialName("System.Xml.Linq")
