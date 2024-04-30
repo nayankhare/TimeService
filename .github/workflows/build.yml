@@ -38,10 +38,5 @@ jobs:
                 [Reflection.Assembly]::LoadWithPartialName("System.Xml.Linq")
                 $path = "./TimeService.API/TimeService.API.csproj"
                 $doc = [System.Xml.Linq.XDocument]::Load($path)
-                echo {{ $doc }}
-                $doc
-                    .Element("Project")
-                    .Element("PropertyGroup")
-                    .Element("Version")
-                    .SetValue("$(major).$(minor).$(patch).$(build)");
+                $doc.Element("Project").Element("PropertyGroup").Element("Version").SetValue("$(major).$(minor).$(patch).$(build)");
                 $doc.Save($path)
