@@ -28,9 +28,6 @@ jobs:
       - name: Restore
         run: dotnet restore ./TimeService.sln
 
-      - name: Build
-        run: dotnet build ./TimeService.sln --configuration Release --no-restore
-
       - name: Setup App Version
         shell: pwsh
         run: |
@@ -39,3 +36,6 @@ jobs:
                 $doc = [System.Xml.Linq.XDocument]::Load($path)
                 $doc.Element("Project").Element("PropertyGroup").Element("Version").SetValue("${{ env.major }}.${{ env.minor }}.${{ env.patch }}");
                 $doc.Save($path)
+                
+      - name: Build
+        run: dotnet build ./TimeService.sln --configuration Release --no-restore
