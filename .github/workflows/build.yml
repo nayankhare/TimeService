@@ -9,6 +9,10 @@ on:
 env:
   AZURE_WEBAPP_NAME: zm22api
   AZURE_WEBAPP_PACKAGE_PATH: "./publish"
+  major: 1
+  minor: 0
+  patch: $[counter(variables['major'], 0)]
+  build: $(Build.BuildId)
   
 jobs:
   build:
@@ -36,8 +40,8 @@ jobs:
                 $doc = [System.Xml.Linq.XDocument]::Load($path)
                 echo {{ $doc }}
                 $doc
-                    .Element("Project Sdk="Microsoft.NET.Sdk.Web")
+                    .Element("Project")
                     .Element("PropertyGroup")
                     .Element("Version")
-                    .Element("$(major).$(minor).$(patch).$(build)");
+                    .SetValue("$(major).$(minor).$(patch).$(build)");
                 $doc.Save($path)
