@@ -5,7 +5,6 @@ on:
   push:
     branches:
       - develop
-
 env:
   AZURE_WEBAPP_NAME: zm22api
   AZURE_WEBAPP_PACKAGE_PATH: "./publish"
@@ -38,5 +37,5 @@ jobs:
                 [Reflection.Assembly]::LoadWithPartialName("System.Xml.Linq")
                 $path = "./TimeService.API/TimeService.API.csproj"
                 $doc = [System.Xml.Linq.XDocument]::Load($path)
-                $doc.Element("Project").Element("PropertyGroup").Element("Version").SetValue("$(major).$(minor).$(patch).$(build)");
+                $doc.Element("Project").Element("PropertyGroup").Element("Version").SetValue("${{ env.major }}.${{ env.minor }}.${{ env.patch }}.${{ env.build }}");
                 $doc.Save($path)
