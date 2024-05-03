@@ -5,20 +5,41 @@ on:
   push:
     branches:
       - develop
-env:
-  AZURE_WEBAPP_NAME: zm22api
-  AZURE_WEBAPP_PACKAGE_PATH: "./publish"
-  major: 1
-  minor: 0
-  patch: $[counter(variables['major'], 0)]
-  build: $(Build.SourceVersion)
-  
+permissions:
+      id-token: write
+      contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+  
+      - name: Change App Version
+        shell: pwsh
+        run: |
+                [Reflection.Assembly]::LoadWithPartialName("System.Xml.Linq")
+                $path = "./TimeService.API/TimeService.API.csproj"
+                $doc = [System.Xml.Linq.XDocument]::Load($path)
+                $buildval = $major = $doc.Element("Project").Element("PropertyGroup").Element("Version").Value
+                $major = $doc.Element("Project").Element("PropertyGroup").Element("Version").Value.Split(".")[0]
+                $minor = $doc.Element("Project").Element("PropertyGroup").Element("Version").Value.Split(".")[1]
+                $patch = $doc.Element("Project").Element("PropertyGroup").Element("Version").Value.Split(".")[2]
+                echo "Build value is: $buildval"
+                echo "Part 1: $major"
+                echo "Part 2: $minor"
+                echo "Part 3: $patch"
+                $doc.Element("Project").Element("PropertyGroup").Element("Version").SetValue("$major.$minor.$patch.${{ github.run_number }}")
+                $doc.Save($path)
+
+      - run: |
+          # Note: the following account information will not work on GHES
+          git config user.name "nayankhare"
+          git config user.email "nayan.khare@gmail.com"
+          git add .
+          git commit -m "CSPROJ updated"
+          git push
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
@@ -28,14 +49,5 @@ jobs:
       - name: Restore
         run: dotnet restore ./TimeService.sln
 
-      - name: Setup App Version
-        shell: pwsh
-        run: |
-                [Reflection.Assembly]::LoadWithPartialName("System.Xml.Linq")
-                $path = "./TimeService.API/TimeService.API.csproj"
-                $doc = [System.Xml.Linq.XDocument]::Load($path)
-                $doc.Element("Project").Element("PropertyGroup").Element("Version").SetValue("${{ env.major }}.${{ env.minor }}.${{ env.patch }}");
-                $doc.Save($path)
-                
       - name: Build
         run: dotnet build ./TimeService.sln --configuration Release --no-restore
