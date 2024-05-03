@@ -5,13 +5,12 @@ on:
   push:
     branches:
       - develop
-
 permissions:
       id-token: write
       contents: write
 
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-latest
 
     steps:
