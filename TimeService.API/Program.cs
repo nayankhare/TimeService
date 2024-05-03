@@ -14,5 +14,6 @@ app.UseHttpsRedirection();
 
 app.MapGet("utctime", () => Results.Ok(DateTime.UtcNow));
 app.MapGet("time", () => Results.Ok(DateTime.Now));
+app.MapGet("hello", () => Results.Ok("Hello World!"));
 
 app.Run();
