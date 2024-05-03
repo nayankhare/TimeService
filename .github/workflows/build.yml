@@ -37,22 +37,9 @@ jobs:
           # Note: the following account information will not work on GHES
           git config user.name "nayankhare"
           git config user.email "nayan.khare@gmail.com"
-
-          timestamp=$(date +'%Y%m%d%H%M%S')
-          branch_name="ts-$timestamp"
-
-          git checkout -b "$branch_name"
-
-          git add "./TimeService.API/TimeService.API.csproj"
-          git commit -m "Update CSProj file"
-          git push origin "$branch_name"
-
-          git checkout -b develop
-          git merge --no-ff "$branch_name"
-          git push origin develop
-
-          git branch -d "$branch_name"
-          git push origin --delete "$branch_name"
+          git add .
+          git commit -m "generated"
+          git push
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
