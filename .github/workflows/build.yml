@@ -2,9 +2,9 @@ name: Build
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - develop
+  #push:
+    #branches:
+      #- develop
 permissions:
       id-token: write
       contents: write
